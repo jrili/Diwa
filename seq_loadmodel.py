@@ -197,7 +197,9 @@ def dataLoader(path, batch_size, dims, model1, model2, reverse=True):
             yield ([encoder_input_data, decoder_input_data], decoder_target_data)
 
 
-
+if len(sys.argv < 2):
+    print('Please supply filename of saved model weights!')
+    sys.exit(1)
 
 '''Load english and tagalog FastText embeddings'''
 eng_fastText_path = '/media/raimarc/airscan4/datasets/fastText/wiki.en/wiki.en.bin'
@@ -284,7 +286,7 @@ model.fit_generator(dataLoader(path=data_path,
                 )
 '''
 #specify model to be loaded
-model.load_weights('checkpoints-cosprox-300epc/model-00300.hdf5')
+model.load_weights(sys.argv[1])
 # Save model after training
 #model.save('s2s.h5')
 #model.save('s2s-completemodel.h5')
