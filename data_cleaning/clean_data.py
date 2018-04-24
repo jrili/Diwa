@@ -23,10 +23,12 @@ def clean_tsv_data(input_filenames, output_filename):
         input_file = open(input_filename, "r", encoding="utf8")
         input_file_lines = input_file.readlines()
         for line in input_file_lines:
-            if line.count('.') > 2 or line.count('?') > 2 or line.count('!') > 2 or \
-                    ((line.count('.') >= 1) and (line.count('?') >= 1)) or \
-                    ((line.count('.') >= 1) and (line.count('!') >= 1)) or \
-                    ((line.count('?') >= 1) and (line.count('!') >= 1)):
+            if (line.count('.') > 2 and line.count('.') > 0) or \
+                (line.count('?') > 2 and line.count('.') > 0) or \
+                (line.count('!') > 2 and line.count('.') > 0) or \
+                ((line.count('.') >= 1) and (line.count('?') >= 1)) or \
+                ((line.count('.') >= 1) and (line.count('!') >= 1)) or \
+                ((line.count('?') >= 1) and (line.count('!') >= 1)):
                 print('\nWARNING: Detected anomaly in line in file %s: \n%s' % (input_filename, line))
             split_line = re.split(eos_regex, line)
             entry_number = 0
