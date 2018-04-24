@@ -22,6 +22,7 @@ from keras.callbacks import ModelCheckpoint
 from keras.utils import plot_model
 from pyfasttext import FastText
 import numpy as np
+import sys
 import random
 
 def read_data(fname):
@@ -357,61 +358,28 @@ def decode_sequence(input_seq):
 
 reversed_input = True
 
-indexes = np.random.randint(0, len(input_texts), 20)
-#indexes = np.random.randint(0, len(valid_input_texts), 100)
-print("TRAINING DECODE...")
-for seq_index in indexes:
-    # Take one sequence (part of the training set)
-    # for trying out decoding.
-    text = input_texts[seq_index]
-    #text = valid_input_texts[seq_index]
-    words = text.split()
 
-    if reversed_input==True:
+print('WELCOME TO PROJECT DIWA - CLI MODE')
+print('(Press Ctrl + C to exit CLI MODE)')
+print('\n--------------\n')
+while True:
+    input_text = input("ENTER TAGALOG INPUT: ")
+    words = input_text.split()
+    if reversed_input == True:
         words.reverse()
         temp = words[0]
         del words[0]
-        #print(words[0])
-        #print(len(words))
+        # print(words[0])
+        # print(len(words))
         words.append(temp)
 
-    encoder_input_data = np.zeros((1, max_encoder_seq_length, embedding_dims),dtype='float32')
+    encoder_input_data = np.zeros((1, max_encoder_seq_length, embedding_dims), dtype='float32')
     for t, word in enumerate(words):
-        encoder_input_data[0,t,:] = filModel.get_numpy_vector(word, normalized=True)
-        #print("decodeding",word)
+        encoder_input_data[0, t, :] = filModel.get_numpy_vector(word, normalized=True)
 
     input_seq = encoder_input_data
 
     decoded_sentence = decode_sequence(input_seq)
-    print('-')
-    print('Input sentence:', input_texts[seq_index])
-    print('Decoded sentence:', decoded_sentence)
+    print('OUTPUT ENGLISH TRANSLATION:', decoded_sentence)
+    print('--')
 
-indexes = np.random.randint(0, len(valid_input_texts), 100)
-print("TEST DECODE...")
-for seq_index in indexes:
-    # Take one sequence (part of the training set)
-    # for trying out decoding.
-    #text = input_texts[seq_index]
-    text = valid_input_texts[seq_index]
-    words = text.split()
-
-    if reversed_input==True:
-        words.reverse()
-        temp = words[0]
-        del words[0]
-        #print(words[0])
-        #print(len(words))
-        words.append(temp)
-
-    encoder_input_data = np.zeros((1, max_encoder_seq_length, embedding_dims),dtype='float32')
-    for t, word in enumerate(words):
-        encoder_input_data[0,t,:] = filModel.get_numpy_vector(word, normalized=True)
-        #print("decodeding",word)
-
-    input_seq = encoder_input_data
-
-    decoded_sentence = decode_sequence(input_seq)
-    print('-')
-    print('Input sentence:', valid_input_texts[seq_index])
-    print('Decoded sentence:', decoded_sentence)
